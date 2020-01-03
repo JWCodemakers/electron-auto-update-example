@@ -26,8 +26,10 @@
   </style>
 </head>
 <body>
+
   <h1>Electron Auto Update Example</h1>
   <p id="version"></p>
+
   <div id="notification" class="hidden">
     <p id="message"></p>
     <button id="close-button" onClick="closeNotification()">
@@ -37,6 +39,7 @@
       Restart
     </button>
   </div>
+
   <script>
     const { ipcRenderer } = require('electron');
     const version = document.getElementById('version');
@@ -45,6 +48,7 @@
     const restartButton = document.getElementById('restart-button');
     
     ipcRenderer.send('app_version');
+    
     ipcRenderer.on('app_version', (event, arg) => {
       ipcRenderer.removeAllListeners('app_version');
       version.innerText = 'Version ' + arg.version;
@@ -55,7 +59,7 @@
       message.innerText = 'A new update is available. Downloading now...';
       notification.classList.remove('hidden');
     });
-
+    
     ipcRenderer.on('update_downloaded', () => {
       ipcRenderer.removeAllListeners('update_downloaded');
       message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
@@ -66,9 +70,10 @@
     function closeNotification() {
       notification.classList.add('hidden');
     }
-    
+
     function restartApp() {
       ipcRenderer.send('restart_app');
     }
+
   </script>
 </body>
